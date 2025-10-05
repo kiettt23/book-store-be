@@ -39,7 +39,6 @@ router.get("/", (req, res, next) => {
     //processing logic
     //Number of items skip for selection
     let offset = limit * (page - 1);
-
     //Read data from db.json then parse to JSobject
     let db = fs.readFileSync("db.json", "utf-8");
     db = JSON.parse(db);
@@ -107,7 +106,6 @@ router.post("/", (req, res, next) => {
     let db = fs.readFileSync("db.json", "utf-8");
     db = JSON.parse(db);
     const { books } = db;
-
     //Add new book to book JS object
     books.push(newBook);
     //Add new book to db JS object
@@ -172,15 +170,50 @@ router.put("/:bookId", (req, res, next) => {
     //Update new content to db book JS object
     const updatedBook = { ...db.books[targetIndex], ...updates };
     db.books[targetIndex] = updatedBook;
-
     //db JSobject to JSON string
-
     db = JSON.stringify(db);
     //write and save to db.json
     fs.writeFileSync("db.json", db);
 
     //put send response
     res.status(200).send(updatedBook);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * params: /
+ * description: update a book
+ * query:
+ * method: delete
+ */
+
+router.delete("/:bookId", (req, res, next) => {
+  //delete input validation
+  try {
+    const { bookId } = req.params;
+    //delete processing
+    //Read data from db.json then parse to JSobject
+    let db = fs.readFileSync("db.json", "utf-8");
+    db = JSON.parse(db);
+    const { books } = db;
+    //find book by id
+    const targetIndex = books.findIndex((book) => book.id === bookId);
+    if (targetIndex < 0) {
+      const exception = new Error(`Book not found`);
+      exception.statusCode = 404;
+      throw exception;
+    }
+    //filter db books object
+    db.books = books.filter((book) => book.id !== bookId);
+    //db JSobject to JSON string
+    db = JSON.stringify(db);
+    //write and save to db.json
+    fs.writeFileSync("db.json", db);
+
+    //delete send response
+    res.status(200).send({});
   } catch (error) {
     next(error);
   }

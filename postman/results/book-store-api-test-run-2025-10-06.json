@@ -1,0 +1,207 @@
+{
+	"id": "1aa2df5a-8af3-4cf0-be3c-14528e885e90",
+	"name": "Book Store API",
+	"timestamp": "2025-10-06T01:29:15.639Z",
+	"collection_id": "48674529-75ed91ac-e2d4-46f1-8aeb-b5bbaf18aaab",
+	"folder_id": 0,
+	"environment_id": "48674529-88dfe854-c212-4a70-bd49-e26ead155c7e",
+	"totalPass": 10,
+	"delay": "1000",
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-10-06T01:29:08.104Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "876bb20d-d9ec-456d-92d3-5719b7801bdc",
+			"name": "Create new book",
+			"url": "http://localhost:8000/books",
+			"time": 68,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status is 201": true,
+				"book_id saved": true
+			},
+			"testPassFailCounts": {
+				"Status is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"book_id saved": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				68
+			],
+			"allTests": [
+				{
+					"Status is 201": true,
+					"book_id saved": true
+				}
+			]
+		},
+		{
+			"id": "ded22294-4a51-4e76-a65d-3d27f3034c74",
+			"name": "Get all books",
+			"url": "http://localhost:8000/books?page=1&limit=5&author=Unknown",
+			"time": 92,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status is 200": true,
+				"success flag true": true,
+				"data is array": true
+			},
+			"testPassFailCounts": {
+				"Status is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"success flag true": {
+					"pass": 1,
+					"fail": 0
+				},
+				"data is array": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				92
+			],
+			"allTests": [
+				{
+					"Status is 200": true,
+					"success flag true": true,
+					"data is array": true
+				}
+			]
+		},
+		{
+			"id": "6a6d3ad5-3d17-43f1-8d71-b9e3ddc86595",
+			"name": "Update existing book",
+			"url": "http://localhost:8000/books/af30f9ea",
+			"time": 101,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status is 200": true,
+				"author updated": true
+			},
+			"testPassFailCounts": {
+				"Status is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"author updated": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				101
+			],
+			"allTests": [
+				{
+					"Status is 200": true,
+					"author updated": true
+				}
+			]
+		},
+		{
+			"id": "236787dc-faba-46e9-9113-4dd7b666aa10",
+			"name": "Delete a book",
+			"url": "http://localhost:8000/books/af30f9ea",
+			"time": 112,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Status is 204": true
+			},
+			"testPassFailCounts": {
+				"Status is 204": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				112
+			],
+			"allTests": [
+				{
+					"Status is 204": true
+				}
+			]
+		},
+		{
+			"id": "537deea3-4b02-4b27-9c92-3ff652f2009c",
+			"name": "Invalid query test",
+			"url": "http://localhost:8000/books?foo=bar",
+			"time": 152,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status is 400 or 401": true,
+				"Contains plain error message": true
+			},
+			"testPassFailCounts": {
+				"Status is 400 or 401": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Contains plain error message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				152
+			],
+			"allTests": [
+				{
+					"Status is 400 or 401": true,
+					"Contains plain error message": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 525,
+	"collection": {
+		"requests": [
+			{
+				"id": "876bb20d-d9ec-456d-92d3-5719b7801bdc",
+				"method": "POST"
+			},
+			{
+				"id": "ded22294-4a51-4e76-a65d-3d27f3034c74",
+				"method": "GET"
+			},
+			{
+				"id": "6a6d3ad5-3d17-43f1-8d71-b9e3ddc86595",
+				"method": "PUT"
+			},
+			{
+				"id": "236787dc-faba-46e9-9113-4dd7b666aa10",
+				"method": "DELETE"
+			},
+			{
+				"id": "537deea3-4b02-4b27-9c92-3ff652f2009c",
+				"method": "GET"
+			}
+		]
+	}
+}

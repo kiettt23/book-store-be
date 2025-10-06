@@ -1,0 +1,151 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-5678-9abc-def0-1234567890ab",
+    "name": "Book Store API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create new book",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"author\": \"Tuan Kiet\",\n  \"country\": \"Vietnam\",\n  \"imageLink\": \"images/learn-express.jpg\",\n  \"language\": \"Vietnamese\",\n  \"pages\": 180,\n  \"title\": \"Learn Express the Right Way\",\n  \"year\": 2024\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/books",
+          "host": ["{{base_url}}"],
+          "path": ["books"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', () => pm.response.to.have.status(201));",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('book_id', json.data.id);",
+              "pm.test('book_id saved', () => pm.expect(pm.collectionVariables.get('book_id')).to.be.a('string'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get all books",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/books?page=1&limit=5&author=Unknown",
+          "host": ["{{base_url}}"],
+          "path": ["books"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "5" },
+            { "key": "author", "value": "Unknown" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('success flag true', () => pm.expect(json.success).to.eql(true));",
+              "pm.test('data is array', () => pm.expect(Array.isArray(json.data)).to.be.true);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update existing book",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"author\": \"Tuan Updated\",\n  \"pages\": 250\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/books/{{book_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["books", "{{book_id}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('author updated', () => pm.expect(json.data.author).to.eql('Tuan Updated'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete a book",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{base_url}}/books/{{book_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["books", "{{book_id}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 204', () => pm.response.to.have.status(204));",
+              "pm.collectionVariables.unset('book_id');"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invalid query test",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/books?foo=bar",
+          "host": ["{{base_url}}"],
+          "path": ["books"],
+          "query": [{ "key": "foo", "value": "bar" }]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 400 or 401', () => pm.expect(pm.response.code).to.be.oneOf([400, 401]));",
+              "let text = pm.response.text();",
+              "try {",
+              "  const json = pm.response.json();",
+              "  pm.test('Contains error message', () => pm.expect(json.message || '').to.include('not allowed'));",
+              "} catch (e) {",
+              "  pm.test('Contains plain error message', () => pm.expect(text).to.include('Query foo is not allowed'));",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
